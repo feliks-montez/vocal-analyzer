@@ -6,8 +6,8 @@ import pyaudio
 import sys
 import wave
 import matplotlib.pyplot as plt
-from scipy.fftpack import fft
 from scipy.io import wavfile
+from scipy import signal
 from microphone import Microphone
 from speaker import Speaker
 
@@ -25,17 +25,27 @@ if __name__ == '__main__':
     sys.exit(-1)
   input_file = sys.argv[1]
 
-  mic = Microphone()
-  mic.record_to_file(1, 'output.wav')
-  input_file = 'output.wav'
+  if (input_file == 'record'):
+    mic = Microphone()
+    mic.record_to_file(1, 'output.wav')
+    input_file = 'output.wav'
   
   speaker = Speaker()
   speaker.play_file(input_file)
     
   rate, data = wavfile.read(input_file)
 
-  b=[(point/2**8.)*2-1 for point in data] # this is 8-bit track, b is now normalized on [-1,1)
-  c = fft(b) # calculate fourier transform (complex numbers list)
-  d = int(len(c)/2)  # you only need half of the fft list (real signal symmetry)
-  plt.plot(abs(data[:(d-1)]),abs(c[:(d-1)]),'r') 
+  plt.subplots_adjust(hspace=0.5)
+  plt.subplot(2,1,1)
+  plt.plot(data)
+  plt.title("Original from %s" % (input_file))
+
+  data_fft = numpy.fft.fft(data) # calculate fourier transform (complex numbers list)
+  freq = (numpy.abs(data_fft[:len(data_fft)]))
+  
+  plt.subplot(2,1,2)
+  plt.plot(freq,'r') 
+  plt.title("Fourier output")
+  plt.xlim(20, 20_000)
+  plt.xscale('log')
   plt.show()
