@@ -20,7 +20,7 @@ flatten = lambda l: [item for sublist in l for item in sublist]
 
 def plot_fourier_compare(datasets):
   plt.subplots_adjust(hspace=0.5)
-  styles = ['r-', 'y-', 'c-', 'g-', 'k-', 'm-']
+  styles = ['r-', 'c-', 'g-', 'y-', 'k-', 'm-']
   signal_names = []
 
   plotargs = []
@@ -84,18 +84,13 @@ if __name__ == '__main__':
     plot_fourier(data)
   elif (input_file == 'compare'):
     mic = Microphone()
-    mic.record_to_file(1, 'person1.wav')
-    input('press enter to record the second sample')
-    mic.record_to_file(1, 'person2.wav')
-    input('press enter to record the third sample')
-    mic.record_to_file(1, 'person3.wav')
+    datasets = []
 
-    rate, data1 = wavfile.read('person1.wav')
-    rate, data2 = wavfile.read('person2.wav')
-    rate, data3 = wavfile.read('person3.wav')
+    again = 'y'
+    while (again.lower() == 'y'):
+      mic.record_to_file(1, 'input.wav')
+      rate, data = wavfile.read('input.wav')
+      datasets.append({'title': 'sample {}'.format(len(datasets)+1), 'data': data})
+      again = input('record again? (N/y) ')
 
-    plot_fourier_compare([
-      {'title': 'sample1', 'data': data1},
-      {'title': 'sample2', 'data': data2},
-      {'title': 'sample3', 'data': data3}
-    ])
+    plot_fourier_compare(datasets)
