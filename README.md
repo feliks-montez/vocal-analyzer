@@ -24,3 +24,5 @@ The approach will follow the general form proposed in the paper, shown in the fl
 
 - A nice [wave coherence example](https://matplotlib.org/3.1.1/gallery/lines_bars_and_markers/cohere.html). Might be relevant at some point.
 - A number of [signal processing examples](https://docs.scipy.org/doc/scipy/reference/tutorial/signal.html)
+- [Signal processing examples](https://www.pythonforengineers.com/audio-and-digital-signal-processingdsp-in-python/)
+- [Audio signal filtering with pyaudio](https://bastibe.de/2012-11-02-real-time-signal-processing-in-python.html)
