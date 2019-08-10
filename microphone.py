@@ -1,12 +1,12 @@
 import pyaudio 
 import wave
 
-
 class Microphone():
   RECORD_SECONDS = 2
   WAVE_OUTPUT_FILENAME = "output.wav"
   
-  def __init__(self, chunk_size=512, format=pyaudio.paInt16, channels=1, rate=44100):
+  def __init__(self, chunk_size=1225, format=pyaudio.paInt16, channels=1, rate=44100):
+    # chunk_size=1225 because rate=44100 is a multiple of it
     self.chunk_size = chunk_size #ADC information [8 bit = 2⁸ steps]
     self.format = format # pyaudio.paInt16 means 16-bit encoding
     self.channels = channels
@@ -18,11 +18,13 @@ class Microphone():
     numdevices = info.get('deviceCount')
     for i in range(0, numdevices):
             if (self.p.get_device_info_by_host_api_device_index(0, i).get('maxInputChannels')) > 0:
+                if (self.p.get_device_info_by_host_api_device_index(0, i).get('name') == 'pulse'): self.device_index = i
                 print("Input Device id ", i, " - ", self.p.get_device_info_by_host_api_device_index(0, i).get('name'))
 
     print("-------------------------------------------------------------")
 
-    self.device_index = int(input("Use which device index? "))
+    if (not self.device_index): self.device_index = int(input("Use which device index? "))
+    print("using input device %i" % self.device_index)
     
   def record(self, seconds=RECORD_SECONDS):
     stream = self.p.open(format=self.format,
