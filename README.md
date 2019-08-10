@@ -18,6 +18,10 @@ This project is based on the following research paper:
 The approach will follow the general form proposed in the paper, shown in the flowchart below.
 ![GFM-IAIF flowchart](res/GFM-IAIF.png)
 
+Some examples for the /a/ sound from the same research paper are shown below.
+![/a/ vowel example](res/vowel-a-attributes.png)
+
+
 # Resources
 
 ## Examples
